@@ -1,18 +1,37 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>韩顺平教育-家居网购</title>
-    <base href="http://localhost:8080/jiaju_mall/">
+    <base href="<%=request.getContextPath() + "/"%>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css"/>
 
-    <script src="../../script/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script src="script/jquery-3.6.0.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
+
+           /* $("#sub-login").click(function () {
+                var usernameVal = $("#loginUsername").val();
+                var usernamePatten = /^\w{6,10}$/;
+                if (!usernamePatten.test(usernameVal)){
+                    $("span[class='loginError']").text("用户名格式不正确");
+                    return false;
+                }
+
+                var passwordVal = $("#loginPassword").val();
+                var passwordPatten = /^\w(6,10)$/
+                if (!passwordPatten.test(passwordVal)){
+                    $("span.loginError").text("密码格式不正确");
+                    return false;
+                }
+
+                $("#span.loginError").text("校验通过");
+                return true;
+            })*/
             $("#sub-btn").click(function () {
 
                 var usernameVal = $("#username").val();
@@ -30,7 +49,7 @@
                 }
 
                 var repwdVal = $("#repwd").val();
-                if (repwdVal != passwordVal){
+                if (repwdVal !== passwordVal){
                     $("span.errorMsg").text("输入的两次密码不正确")
                 }
 
@@ -61,7 +80,7 @@
                 <!-- Header Logo Start -->
                 <div class="col-auto align-self-center">
                     <div class="header-logo">
-                        <a href="../../index.html"><img src="assets/images/logo/logo.png" alt="Site Logo"/></a>
+                        <a href="index.html"><img src="assets/images/logo/logo.png" alt="Site Logo"/></a>
                     </div>
                 </div>
                 <!-- Header Logo End -->
@@ -106,16 +125,18 @@
                         <div id="lg1" class="tab-pane active">
                             <div class="login-form-container">
                                 <div class="login-register-form">
-                                    <form action="#" method="post">
-                                        <input type="text" name="user-name" placeholder="Username"/>
-                                        <input type="password" name="user-password" placeholder="Password"/>
+                                    ${requestScope.msg}
+                                    <form action="member" method="post">
+                                        <input type="hidden" name="action" value="login">
+                                        <input type="text" name="username" value="${requestScope.username}" id="loginUsername" placeholder="Username"/>
+                                        <input type="password" name="userPassword" id="loginPassword" placeholder="Password"/>
                                         <div class="button-box">
                                             <div class="login-toggle-btn">
                                                 <input type="checkbox"/>
                                                 <a class="flote-none" href="javascript:void(0)">Remember me</a>
                                                 <a href="#">Forgot Password?</a>
                                             </div>
-                                            <button type="submit"><span>Login</span></button>
+                                            <button type="submit" id="sub-login"><span>Login</span></button>
                                         </div>
                                     </form>
                                 </div>
@@ -126,7 +147,9 @@
                                 <div class="login-register-form">
                                     <span class="errorMsg"
                                           style="float: right; font-weight: bold; font-size: 20pt; margin-left: 10px;"></span>
-                                    <form action="/jiaju_mall/register" method="post">
+                                    <form action="member" method="post">
+                                        <input type="hidden" name="action" value="register">
+
                                         <input type="text" id="username" name="username" placeholder="Username"/>
                                         <input type="password" id="password" name="password" placeholder="输入密码"/>
                                         <input type="password" id="repwd" name="rePassword" placeholder="确认密码"/>
@@ -185,7 +208,7 @@
                                         <li class="li"><a class="single-link" href="my-account.html">我的账号</a>
                                         </li>
                                         <li class="li"><a class="single-link" href="cart.html">我的购物车</a></li>
-                                        <li class="li"><a class="single-link" href="login.html">登录</a></li>
+                                        <li class="li"><a class="single-link" href="login.jsp">登录</a></li>
                                         <li class="li"><a class="single-link" href="wishlist.html">感兴趣的</a></li>
                                         <li class="li"><a class="single-link" href="checkout.html">结账</a></li>
                                     </ul>

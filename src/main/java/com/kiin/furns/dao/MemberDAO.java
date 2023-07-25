@@ -7,4 +7,7 @@ public interface MemberDAO {
     public Member queryMemberByName(String username);
 
     public boolean saveMember(Member member);
+
+    public Member queryMemberByNameAndPassword(String username, String password);
+
 }
