@@ -1,9 +1,12 @@
-<!DOCTYPE html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <title>韩顺平教育-家居网购</title>
+    <base href="<%=request.getContextPath() + "/"%>">
     <!-- 移动端适配 -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
@@ -75,7 +78,7 @@
         <h3 class="cart-page-title">家居后台管理</h3>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                <form action="#">
+                <form action="manage/furniture">
                     <div class="table-content table-responsive cart-table-content">
                         <table>
                             <thead>
@@ -90,19 +93,21 @@
                             </tr>
                             </thead>
                             <tbody>
+
+                            <c:forEach items="${requestScope.furniture}" var="furn">
                             <tr>
                                 <td class="product-thumbnail">
-                                    <a href="#"><img class="img-responsive ml-3" src="assets/images/product-image/1.jpg"
+                                    <a href="#"><img class="img-responsive ml-3" src="${furn.imgPath}"
                                                      alt=""/></a>
                                 </td>
-                                <td class="product-name"><a href="#">Product Name</a></td>
-                                <td class="product-name"><a href="#">蚂蚁家居</a></td>
-                                <td class="product-price-cart"><span class="amount">60.00</span></td>
+                                <td class="product-name"><a href="#">${furn.name}</a></td>
+                                <td class="product-name"><a href="#">${furn.marker}</a></td>
+                                <td class="product-price-cart"><span class="amount">${furn.price}</span></td>
                                 <td class="product-quantity">
-                                    100
+                                    ${furn.sales}
                                 </td>
                                 <td class="product-quantity">
-                                    80
+                                    ${furn.stock}
                                 </td>
                                 <td class="product-remove">
                                     <a href="#"><i class="icon-pencil"></i></a>

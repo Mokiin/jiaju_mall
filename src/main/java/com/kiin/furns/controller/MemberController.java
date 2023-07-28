@@ -38,7 +38,7 @@ public class MemberController extends BasicController {
 
         try {
             if (memberService.login(member)) {
-                req.getRequestDispatcher("/login_ok.html").forward(req,resp);
+                req.getRequestDispatcher("/views/member/login_ok.html").forward(req,resp);
             }else {
                 req.setAttribute("msg","用户名或密码错误");
                 req.setAttribute("username",username);

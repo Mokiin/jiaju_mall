@@ -1,20 +1,20 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-    <title>韩顺平教育-家居网购~</title>
-    <base href="http://locaolhost:8080/jiaju_mall">
+    <title>韩顺平教育-家居网购</title>
+    <base href="<%=request.getContextPath() + "/"%>">
+    <!-- 移动端适配 -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
-    <link rel="stylesheet" href="assets/css/style.min.css"/>
-
+    <link rel="stylesheet" href="assets/css/style.min.css">
 </head>
+
 <body>
 <!-- Header Area start  -->
 <div class="header section">
-    <!-- Header Top Message Start -->
     <!-- Header Top  End -->
     <!-- Header Bottom  Start -->
     <div class="header-bottom d-none d-lg-block">
@@ -27,9 +27,24 @@
                     </div>
                 </div>
                 <!-- Header Logo End -->
+
+                <!-- Header Action Start -->
+                <div class="col align-self-center">
+                    <div class="header-actions">
+                        <!-- Single Wedge Start -->
+                        <div class="header-bottom-set dropdown">
+                            <a href="manage/furniture?action=queryFurniture">家居管理</a>
+                        </div>
+                        <div class="header-bottom-set dropdown">
+                            <a href="pages/manager/manager.html">订单管理</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Header Action End -->
             </div>
         </div>
     </div>
+    <!-- Header Bottom  End -->
     <!-- Header Bottom  Start 手机端的header -->
     <div class="header-bottom d-lg-none sticky-nav bg-white">
         <div class="container position-relative">
@@ -37,8 +52,7 @@
                 <!-- Header Logo Start -->
                 <div class="col-auto align-self-center">
                     <div class="header-logo">
-                        <a href="index.html"><img width="280px" src="assets/images/logo/logo.png"
-                                                  alt="Site Logo"/></a>
+                        <a href="index.html"><img width="280px" src="assets/images/logo/logo.png" alt="Site Logo"/></a>
                     </div>
                 </div>
                 <!-- Header Logo End -->
@@ -49,24 +63,18 @@
     <div style="width: 100%;height: 50px;background-color: black"></div>
     <!-- Main Menu End -->
 </div>
-<!-- Header Area End  -->
-<!-- login area start -->
-<div class="login-register-area pt-70px pb-100px">
+<!-- Cart Area Start -->
+<div class="cart-main-area pt-100px pb-100px">
     <div class="container">
+        <h3 class="cart-page-title">家居后台管理-菜单</h3>
         <div class="row">
-            <div class="col-lg-7 col-md-12 ml-auto mr-auto">
-                <div class="login-register-wrapper">
-                    <div class="login-register-tab-list nav">
-                        <a class="active"  href="login.html">
-                            <h4>注册失败, 重新注册</h4>
-                        </a>
-                    </div>
-                </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
             </div>
         </div>
     </div>
 </div>
-<!-- login area end -->
+<!-- Cart Area End -->
 
 <!-- Footer Area Start -->
 <div class="footer-area">
