@@ -17,4 +17,14 @@ public class DataUtils {
         }
         return bean;
     }
+
+    public static int parseInt(String val,int defaultValue){
+        int parseInt;
+        try {
+            parseInt = Integer.parseInt(val);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+        return parseInt;
+    }
 }

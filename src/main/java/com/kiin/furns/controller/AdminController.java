@@ -21,9 +21,9 @@ public class AdminController extends BasicController {
         Admin admin = new Admin(null, adminName, password, null);
         try {
             if (adminService.queryAdmin(admin) != null) {
-                request.getRequestDispatcher("/manager_menu.jsp").forward(request, response);
+                request.getRequestDispatcher("views/manager/manager_menu.jsp").forward(request, response);
             } else {
-                request.getRequestDispatcher("/manager_login.jsp").forward(request, response);
+                request.getRequestDispatcher("views/manager/manager_login.jsp").forward(request, response);
             }
         } catch (ServletException e) {
             throw new RuntimeException(e);

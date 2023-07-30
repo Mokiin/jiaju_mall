@@ -1,6 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page isELIgnored="false" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,6 +11,16 @@
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css">
+    <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("a.delCss").click(function () {
+                var furnName = $(this).parent().parent().find("td:eq(1)").text();
+                return confirm("确定删除「" + furnName + "」?")
+            })
+        })
+
+    </script>
 </head>
 
 <body>
@@ -46,6 +55,9 @@
                         <!-- Single Wedge Start -->
                         <div class="header-bottom-set dropdown">
                             <a href="#">后台管理</a>
+                        </div>
+                        <div class="header-bottom-set dropdown">
+                            <a href="views/manager/furn_add.jsp?pageNo=${requestScope.page.pageNo}">添加家具</a>
                         </div>
                     </div>
                 </div>
@@ -94,7 +106,7 @@
                             </thead>
                             <tbody>
 
-                            <c:forEach items="${requestScope.furniture}" var="furn">
+                            <c:forEach items="${requestScope.page.items}" var="furn">
                             <tr>
                                 <td class="product-thumbnail">
                                     <a href="#"><img class="img-responsive ml-3" src="${furn.imgPath}"
@@ -104,33 +116,16 @@
                                 <td class="product-name"><a href="#">${furn.marker}</a></td>
                                 <td class="product-price-cart"><span class="amount">${furn.price}</span></td>
                                 <td class="product-quantity">
-                                    ${furn.sales}
+                                        ${furn.sales}
                                 </td>
                                 <td class="product-quantity">
-                                    ${furn.stock}
+                                        ${furn.stock}
                                 </td>
                                 <td class="product-remove">
-                                    <a href="#"><i class="icon-pencil"></i></a>
-                                    <a href="#"><i class="icon-close"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <a href="#"><img class="img-responsive ml-3" src="assets/images/product-image/2.jpg"
-                                                     alt=""/></a>
-                                </td>
-                                <td class="product-name"><a href="#">Product NameProduct Name</a></td>
-                                <td class="product-name"><a href="#">蚂蚁家居</a></td>
-                                <td class="product-price-cart"><span class="amount">60.00</span></td>
-                                <td class="product-quantity">
-                                    100
-                                </td>
-                                <td class="product-quantity">
-                                    80
-                                </td>
-                                <td class="product-remove">
-                                    <a href="#"><i class="icon-pencil"></i></a>
-                                    <a href="#"><i class="icon-close"></i></a>
+                                    <a href="manage/furniture?action=queryFurnitureById&id=${furn.id}&pageNo=${requestScope.page.pageNo}"><i
+                                            class="icon-pencil"></i></a>
+                                    <a class="delCss" href="manage/furniture?action=delFurnitureById&id=${furn.id}&pageNo=${requestScope.page.pageNo}"><i
+                                            class="icon-close"></i></a>
                                 </td>
                             </tr>
                             </tbody>
@@ -140,6 +135,35 @@
             </div>
         </div>
     </div>
+</div>
+<div class="pro-pagination-style text-center mb-md-30px mb-lm-30px mt-6" data-aos="fade-up">
+    <ul>
+
+        <li><a href="manage/furniture?action=page&pageNo=1">首页</a></li>
+        <c:if test="${requestScope.page.pageNo > 1}">
+            <li><a href="manage/furniture?action=page&pageNo=${requestScope.page.pageNo - 1}">上一页</a></li>
+        </c:if>
+
+        <c:set var="begin" value="1"/>
+        <c:set var="end" value="${requestScope.page.pageTotalCount}"/>
+        <c:forEach begin="${begin}" end="${end}" var="i">
+            <c:if test="${i == requestScope.page.pageNo}">
+                <li><a class="active" href="manage/furniture?action=page&pageNo=${i}">${i}</a></li>
+            </c:if>
+            <c:if test="${i != requestScope.page.pageNo}">
+                <li><a href="manage/furniture?action=page&pageNo=${i}">${i}</a></li>
+            </c:if>
+        </c:forEach>
+
+
+        <c:if test="${requestScope.page.pageNo < requestScope.page.pageTotalCount}">
+            <li><a href="manage/furniture?action=page&pageNo=${requestScope.page.pageNo + 1}">下一页</a></li>
+        </c:if>
+        <li><a href="manage/furniture?action=page&pageNo=${requestScope.page.pageTotalCount}">末页</a></li>
+
+        <li><a>${requestScope.page.pageTotalCount}</a></li>
+        <li><a>${requestScope.page.totalRow}</a></li>
+    </ul>
 </div>
 <!-- Cart Area End -->
 
@@ -161,7 +185,8 @@
                                     <ul class="align-items-center">
                                         <li class="li"><a class="single-link" href="about.html">关于我们</a></li>
                                         <li class="li"><a class="single-link" href="#">交货信息</a></li>
-                                        <li class="li"><a class="single-link" href="privacy-policy.html">隐私与政策</a></li>
+                                        <li class="li"><a class="single-link" href="privacy-policy.html">隐私与政策</a>
+                                        </li>
                                         <li class="li"><a class="single-link" href="#">条款和条件</a></li>
                                         <li class="li"><a class="single-link" href="#">制造</a></li>
                                     </ul>

@@ -9,4 +9,13 @@ public interface FurnitureDAO {
     public List<Furniture> queryFurniture();
 
     public boolean addFurniture(Furniture furniture);
+
+    public boolean delFurnitureById(int id);
+
+    public Furniture queryFurnitureById(int id);
+
+    public boolean updateFurniture(Furniture furniture);
+
+    public int getTotalRow();
+    public List<Furniture> getPageItems(int begin,int pageSize);
 }
