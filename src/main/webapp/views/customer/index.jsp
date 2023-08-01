@@ -1,14 +1,25 @@
-<!DOCTYPE html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>韩顺平教育-家居网购~</title>
     <!-- 移动端适配 -->
+    <base href="<%=request.getContextPath() + "/"%>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css">
+    <script src="/script/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("button.add-to-cart").click(function () {
+                var furnId = $(this).attr("furnId");
+                location.href = "cartController?action=addItem&id=" + furnId;
+            })
+        })
+    </script>
 </head>
 
 <body>
@@ -22,7 +33,7 @@
                 <!-- Header Logo Start -->
                 <div class="col-auto align-self-center">
                     <div class="header-logo">
-                        <a href="index.html"><img src="assets/images/logo/logo.png" alt="Site Logo"/></a>
+                        <a href="index.jsp"><img src="assets/images/logo/logo.png" alt="Site Logo"/></a>
                     </div>
                 </div>
                 <!-- Header Logo End -->
@@ -34,24 +45,36 @@
                             <a href="javascript:void(0)" class="header-action-btn search-btn"><i
                                     class="icon-magnifier"></i></a>
                             <div class="dropdown_search">
-                                <form class="action-form" action="#">
-                                    <input class="form-control" placeholder="Enter your search key" type="text">
+                                <form class="action-form" action="customerFurnController">
+                                    <input type="hidden" name="action" value="pageByName">
+                                    <input class="form-control" name="name" placeholder="输入家具名搜索" type="text">
                                     <button class="submit" type="submit"><i class="icon-magnifier"></i></button>
                                 </form>
                             </div>
                         </div>
+                        <c:if test="${empty sessionScope.member}">
                         <!-- Single Wedge Start -->
                         <div class="header-bottom-set dropdown">
                             <a href="views/member/login.jsp">登录|注册</a>
                         </div>
-                        <div class="header-bottom-set dropdown">
-                            <a href="#">后台管理</a>
-                        </div>
+                        </c:if>
+                        <c:if test="${not empty sessionScope.member} ">
+                            <div class="header-bottom-set dropdown">
+                                <a>欢迎：${sessionScope.member.username}</a>
+                            </div>
+                            <div class="header-bottom-set dropdown">
+                                <a href="#">订单管理</a>
+                            </div>
+                            <div class="header-bottom-set dropdown">
+                                <a href="member?action=logout">注销</a>
+                            </div>
+                        </c:if>
+
                         <!-- Single Wedge End -->
-                        <a href="#offcanvas-cart"
-                           class="header-action-btn header-action-btn-cart offcanvas-toggle pr-0">
+                        <a href="views/cart/cart.jsp"
+                           class="header-action-btn header-action-btn-cart pr-0">
                             <i class="icon-handbag"> 购物车</i>
-                            <span class="header-action-num">88</span>
+                            <span class="header-action-num">${sessionScope.cart.totalCount}</span>
                         </a>
                         <a href="#offcanvas-mobile-menu"
                            class="header-action-btn header-action-btn-menu offcanvas-toggle d-lg-none">
@@ -71,7 +94,7 @@
                 <!-- Header Logo Start -->
                 <div class="col-auto align-self-center">
                     <div class="header-logo">
-                        <a href="index.html"><img width="280px" src="assets/images/logo/logo.png" alt="Site Logo" /></a>
+                        <a href="index.jsp"><img width="280px" src="assets/images/logo/logo.png" alt="Site Logo" /></a>
                     </div>
                 </div>
                 <!-- Header Logo End -->
@@ -100,14 +123,15 @@
                     <!-- 1st tab start -->
                     <div class="tab-pane fade show active" id="tab-product-new-arrivals">
                         <div class="row">
+                            <c:forEach items="${requestScope.page.items}" var="furn">
                             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6" data-aos="fade-up"
                                  data-aos-delay="200">
                                 <!-- Single Prodect -->
                                 <div class="product">
                                     <div class="thumb">
                                         <a href="shop-left-sidebar.html" class="image">
-                                            <img src="assets/images/product-image/6.jpg" alt="Product"/>
-                                            <img class="hover-image" src="assets/images/product-image/5.jpg"
+                                            <img src="${furn.imgPath}" alt="Product"/>
+                                            <img class="hover-image" src="${furn.imgPath}"
                                                  alt="Product"/>
                                         </a>
                                         <span class="badges">
@@ -118,161 +142,33 @@
                                                title="Quick view" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
                                                     class="icon-size-fullscreen"></i></a>
                                         </div>
-                                        <button title="Add To Cart" class=" add-to-cart">Add
+                                        <button title="Add To Cart" furnId="${furn.id}" class=" add-to-cart">Add
                                             To Cart
                                         </button>
                                     </div>
                                     <div class="content">
                                         <h5 class="title">
-                                            <a href="shop-left-sidebar.html">Simple 北欧小桌 </a></h5>
+                                            <a href="shop-left-sidebar.html">Simple ${furn.name} </a></h5>
                                         <span class="price">
-                                                <span class="new">家居:　北欧简约家具</span>
+                                                <span class="new">家居:　${furn.name}</span>
                                             </span>
                                         <span class="price">
-                                                <span class="new">厂商:　瑞典</span>
+                                                <span class="new">厂商:　${furn.maker}</span>
                                             </span>
                                         <span class="price">
-                                                <span class="new">价格:　￥2030.00</span>
+                                                <span class="new">价格:　￥${furn.price}</span>
                                             </span>
                                         <span class="price">
-                                                <span class="new">销量:　668</span>
+                                                <span class="new">销量:　${furn.sales}</span>
                                             </span>
                                         <span class="price">
-                                                <span class="new">库存:　20</span>
+                                                <span class="new">库存:　${furn.stock}</span>
                                             </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6" data-aos="fade-up"
-                                 data-aos-delay="400">
-                                <!-- Single Prodect -->
-                                <div class="product">
-                                    <div class="thumb">
-                                        <a href="shop-left-sidebar.html" class="image">
-                                            <img src="assets/images/product-image/4.jpg" alt="Product"/>
-                                            <img class="hover-image" src="assets/images/product-image/3.jpg"
-                                                 alt="Product"/>
-                                        </a>
-                                        <span class="badges">
-                                                <span class="sale">-10%</span>
-                                            <span class="new">New</span>
-                                            </span>
-                                        <div class="actions">
-                                            <a href="#" class="action wishlist" data-link-action="quickview"
-                                               title="Quick view" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                                                    class="icon-size-fullscreen"></i></a>
-                                        </div>
-                                        <button title="Add To Cart" class=" add-to-cart">Add
-                                            To Cart
-                                        </button>
-                                    </div>
-                                    <div class="content">
-                                        <h5 class="title">
-                                            <a href="shop-left-sidebar.html">Simple 北欧椅子 </a></h5>
-                                        <span class="price">
-                                                <span class="new">家居:　北欧简约家具</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">厂商:　瑞典</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">价格:　￥2030.00</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">销量:　668</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">库存:　20</span>
-                                            </span>
-                                    </div>
-                                </div>
-                                <!-- Single Prodect -->
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-es-30px" data-aos="fade-up"
-                                 data-aos-delay="600">
-                                <!-- Single Prodect -->
-                                <div class="product">
-                                    <div class="thumb">
-                                        <a href="shop-left-sidebar.html" class="image">
-                                            <img src="assets/images/product-image/14.jpg" alt="Product"/>
-                                            <img class="hover-image" src="assets/images/product-image/13.jpg"
-                                                 alt="Product"/>
-                                        </a>
-                                        <span class="badges">
-                                            </span>
-                                        <div class="actions">
-                                            <a href="#" class="action wishlist" data-link-action="quickview"
-                                               title="Quick view" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                                                    class="icon-size-fullscreen"></i></a>
-                                        </div>
-                                        <button title="Add To Cart" class=" add-to-cart">Add
-                                            To Cart
-                                        </button>
-                                    </div>
-                                    <div class="content">
-                                        <h5 class="title">
-                                            <a href="shop-left-sidebar.html">Simple 北欧台灯 </a></h5>
-                                        <span class="price">
-                                                <span class="new">家居:　北欧简约家具</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">厂商:　瑞典</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">价格:　￥2030.00</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">销量:　668</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">库存:　20</span>
-                                            </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 " data-aos="fade-up" data-aos-delay="800">
-                                <!-- Single Prodect -->
-                                <div class="product">
-                                    <div class="thumb">
-                                        <a href="shop-left-sidebar.html" class="image">
-                                            <img src="assets/images/product-image/16.jpg" alt="Product"/>
-                                            <img class="hover-image" src="assets/images/product-image/15.jpg"
-                                                 alt="Product"/>
-                                        </a>
-                                        <span class="badges">
-                                                <span class="new">New</span>
-                                            </span>
-                                        <div class="actions">
-                                            <a href="#" class="action wishlist" data-link-action="quickview"
-                                               title="Quick view" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                                                    class="icon-size-fullscreen"></i></a>
-                                        </div>
-                                        <button title="Add To Cart~" class=" add-to-cart">Add
-                                            To Cart
-                                        </button>
-                                    </div>
-                                    <div class="content">
-                                        <h5 class="title">
-                                            <a href="shop-left-sidebar.html">Simple 北欧盆景架 </a></h5>
-                                        <span class="price">
-                                                <span class="new">家居:　北欧简约家具</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">厂商:　瑞典</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">价格:　￥2030.00</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">销量:　668</span>
-                                            </span>
-                                        <span class="price">
-                                                <span class="new">库存:　20</span>
-                                            </span>
-                                    </div>
-                                </div>
-                                <!-- Single Prodect -->
-                            </div>
+                            </c:forEach>
+
                         </div>
                     </div>
                     <!-- 1st tab end -->
@@ -285,14 +181,28 @@
 <div class="pro-pagination-style text-center mb-md-30px mb-lm-30px mt-6" data-aos="fade-up">
     <ul>
         <li><a href="#">首页</a></li>
-        <li><a href="#">上页</a></li>
-        <li><a class="active" href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">下页</a></li>
+        <c:if test="${requestScope.page.pageNo} > 1">
+        <%--<li><a href="customerFurnController?action=page&pageNo="${requestScope.page.pageNo - 1}>上页</a></li>--%>
+            <li><a href="${requestScope.page.url}&pageNo="${requestScope.page.pageNo - 1}>上页</a></li>
+        </c:if>
+
+        <c:set var="begin" value="1"/>
+        <c:set var="end" value="${requestScope.page.pageTotalCount}"/>
+        <c:forEach begin="${begin}" end="${end}" var="i">
+            <c:if test="${i == requestScope.page.pageNo}">
+                <li><a class="active" href="${requestScope.page.url}&pageNo=${i}">${i}</a></li>
+            </c:if>
+            <c:if test="${i != requestScope.page.pageNo}">
+                <li><a href="${requestScope.page.url}&pageNo=${i}">${i}</a></li>
+            </c:if>
+        </c:forEach>
+
+        <c:if test="${requestScope.page.pageNo} < ${requestScope.page.pageTotalCount}">
+        <li><a href="${requestScope.page.url}&pageNo="${requestScope.page.pageNo + 1}>下页</a></li>
+        </c:if>
         <li><a href="#">末页</a></li>
-        <li><a>共10页</a></li>
-        <li><a>共90记录</a></li>
+        <li><a>共${requestScope.page.pageTotalCount}页</a></li>
+        <li><a>共${requestScope.page.totalRow}记录</a></li>
     </ul>
 </div>
 <!--  Pagination Area End -->
@@ -359,7 +269,7 @@
                                     <ul class="align-items-center">
                                         <li class="li"><a class="single-link" href="my-account.html">我的账号</a>
                                         </li>
-                                        <li class="li"><a class="single-link" href="cart.html">我的购物车</a></li>
+                                        <li class="li"><a class="single-link" href="views/cart/cart.jsp">我的购物车</a></li>
                                         <li class="li"><a class="single-link" href="login.html">登录</a></li>
                                         <li class="li"><a class="single-link" href="wishlist.html">感兴趣的</a></li>
                                         <li class="li"><a class="single-link" href="checkout.html">结账</a></li>
@@ -410,38 +320,38 @@
                         <div class="swiper-container gallery-top mb-4">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="assets/images/product-image/1.jpg" alt="">
+                                    <img class="img-responsive m-auto" src="../../assets/images/product-image/1.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="assets/images/product-image/2.jpg" alt="">
+                                    <img class="img-responsive m-auto" src="../../assets/images/product-image/2.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="assets/images/product-image/3.jpg" alt="">
+                                    <img class="img-responsive m-auto" src="../../assets/images/product-image/3.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="assets/images/product-image/4.jpg" alt="">
+                                    <img class="img-responsive m-auto" src="../../assets/images/product-image/4.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="assets/images/product-image/5.jpg" alt="">
+                                    <img class="img-responsive m-auto" src="../../assets/images/product-image/5.jpg" alt="">
                                 </div>
                             </div>
                         </div>
                         <div class="swiper-container gallery-thumbs slider-nav-style-1 small-nav">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="assets/images/product-image/1.jpg" alt="">
+                                    <img class="img-responsive m-auto" src="../../assets/images/product-image/1.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="assets/images/product-image/2.jpg" alt="">
+                                    <img class="img-responsive m-auto" src="../../assets/images/product-image/2.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="assets/images/product-image/3.jpg" alt="">
+                                    <img class="img-responsive m-auto" src="../../assets/images/product-image/3.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="assets/images/product-image/4.jpg" alt="">
+                                    <img class="img-responsive m-auto" src="../../assets/images/product-image/4.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="assets/images/product-image/5.jpg" alt="">
+                                    <img class="img-responsive m-auto" src="../../assets/images/product-image/5.jpg" alt="">
                                 </div>
                             </div>
                             <!-- Add Arrows -->
@@ -532,9 +442,9 @@
 <!-- Modal end -->
 
 <!-- Use the minified version files listed below for better performance and remove the files listed above -->
-<script src="assets/js/vendor/vendor.min.js"></script>
-<script src="assets/js/plugins/plugins.min.js"></script>
+<script src="../../assets/js/vendor/vendor.min.js"></script>
+<script src="../../assets/js/plugins/plugins.min.js"></script>
 <!-- Main Js -->
-<script src="assets/js/main.js"></script>
+<script src="../../assets/js/main.js"></script>
 </body>
 </html>

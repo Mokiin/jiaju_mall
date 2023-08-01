@@ -17,5 +17,10 @@ public interface FurnitureDAO {
     public boolean updateFurniture(Furniture furniture);
 
     public int getTotalRow();
-    public List<Furniture> getPageItems(int begin,int pageSize);
+
+    public List<Furniture> getPageItems(int begin, int pageSize);
+
+    public int getPageTotalRowByName(String name);
+
+    public List<Furniture> getPageItemsByName(int begin, int pageSize, String name);
 }

@@ -19,4 +19,6 @@ public interface FurnitureService {
     public boolean updateFurniture(Furniture furniture);
 
     public Page<Furniture> page(int pageNo,int pageSize);
+
+    public Page<Furniture> pageByName(int pageNo, int pageSize,String name);
 }

@@ -13,7 +13,7 @@ public class FurnitureServiceImpl implements FurnitureService {
     private FurnitureDAO furnitureDAO = new FurnitureDAOImpl();
 
     @Override
-    public List<Furniture> queryFurniture(){
+    public List<Furniture> queryFurniture() {
         return furnitureDAO.queryFurniture();
     }
 
@@ -39,16 +39,16 @@ public class FurnitureServiceImpl implements FurnitureService {
 
     @Override
     public Page<Furniture> page(int pageNo, int pageSize) {
-
         Page<Furniture> page = new Page<Furniture>();
 
         page.setPageNo(pageNo);
         page.setPageSize(pageSize);
+
         int totalRow = furnitureDAO.getTotalRow();
         page.setTotalRow(totalRow);
 
         int totalCount = totalRow / pageSize;
-        if (totalRow % pageSize > 0){
+        if (totalRow % pageSize > 0) {
             totalCount += 1;
         }
         page.setPageTotalCount(totalCount);
@@ -56,6 +56,35 @@ public class FurnitureServiceImpl implements FurnitureService {
         int begin = (pageNo - 1) * pageSize;
         List<Furniture> items = furnitureDAO.getPageItems(begin, pageSize);
         page.setItems(items);
+        return page;
+    }
+
+    /**
+     *
+     * @param pageNo 当前在第几页
+     * @param pageSize 每页显示多少条数据
+     * @param name
+     * @return
+     */
+    @Override
+    public Page<Furniture> pageByName(int pageNo, int pageSize, String name) {
+        Page<Furniture> page = new Page<Furniture>();
+
+        page.setPageNo(pageNo);
+        page.setPageSize(pageSize);
+
+        int totalRow = furnitureDAO.getPageTotalRowByName(name);
+        page.setTotalRow(totalRow);
+
+        int totalCount = totalRow / pageSize;
+        if (totalRow % pageSize > 0) {
+            totalCount += 1;
+        }
+        page.setPageTotalCount(totalCount);
+
+        int begin = (pageNo - 1) * pageSize;
+        List<Furniture> furnitures = furnitureDAO.getPageItemsByName(begin, pageSize, name);
+        page.setItems(furnitures);
         return page;
     }
 }
